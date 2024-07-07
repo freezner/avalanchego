@@ -1,0 +1,42 @@
+version: '3.8'
+
+services:
+  avalanche-node1:
+    image: avalanche:latest
+    container_name: avalanche-node1
+    ports:
+      - "9650:9650"
+      - "9651:9651"
+    volumes:
+      - ./node1:/config
+    command: >
+      /avalanchego/build/avalanchego
+      --network-id=local
+      --db-dir=/config/db
+      --log-level=debug
+      --http-host=0.0.0.0
+      --config-file=/config/config.json
+    networks:
+      - avalanche-network
+
+  avalanche-node2:
+    image: avalanche:latest
+    container_name: avalanche-node2
+    ports:
+      - "9652:9650"
+      - "9653:9651"
+    volumes:
+      - ./node2:/config
+    command: >
+      /avalanchego/build/avalanchego
+      --network-id=local
+      --db-dir=/config/db
+      --log-level=debug
+      --http-host=0.0.0.0
+      --config-file=/config/config.json
+    networks:
+      - avalanche-network
+
+networks:
+  avalanche-network:
+    driver: bridge
